@@ -1,0 +1,217 @@
+package Final;
+import java.util.Scanner;
+abstract public class Cake{
+	public final void templateMethod(int quantity){
+	makeCake(quantity);
+	//makeCrust;
+	//addLayers(layers);
+	bake();
+	refrigerate();
+	}
+
+	public void makeCake(int quantity){}
+//	{
+//	System.out.println("Quantity: "+quantity+" cake(s)");
+//	}
+
+	public void bake() {}                      //Hook Template (specific minutes of time to bake cake)
+
+	public void refrigerate() {}               //Hook Template
+
+	abstract String cakeName();
+
+	abstract int cakePrice();
+}
+class CakeFactory
+{
+	Cake cake;
+	Cake createCake(String type){
+		switch (type){
+			case "eggless":
+				cake= new EgglessCake();
+				return cake;
+			case "chocolate":
+				cake= new FlavourChocolate(cake);
+				return cake;
+			case "mango":
+				cake= new FlavourMango(cake);
+				return cake;
+			case "strawberry":
+				cake= new FlavourStrawberry(cake);
+				return cake;
+			case "nuts":
+				cake= new ToppingNuts(cake);
+				return cake;
+			case "oreo":
+				cake= new ToppingOreo(cake);
+				return cake;
+			default:
+				cake= new EggCake();
+				return cake;
+		}
+	}
+}
+abstract class Decorator extends Cake{
+	Cake cake;
+}
+class ToppingNuts extends Decorator{
+	ToppingNuts(Cake cake){
+	this.cake=cake;
+	}
+	String cakeName(){
+	return cake.cakeName()+" with topping Nuts";
+	}
+	int cakePrice(){
+	return cake.cakePrice()+25;
+	}
+}
+class ToppingOreo extends Decorator{
+	ToppingOreo(Cake cake){
+	this.cake=cake;
+	}
+	String cakeName(){
+	return cake.cakeName()+" with topping Oreo";
+	}
+	int cakePrice(){
+	return cake.cakePrice()+55;
+	}
+}
+class EggCake extends Cake{
+	int cakePrice(){
+	return 70;
+	  }
+	String cakeName(){
+	return "Regular ShortCake (with egg)";
+	  }
+}
+class EgglessCake extends Cake{
+	int cakePrice(){
+	return 50;
+	  }
+	String cakeName(){
+	return "Eggless ShortCake";
+	  }
+}
+class FlavourChocolate extends Cake{
+	Cake cake;
+	FlavourChocolate(Cake cake){
+	this.cake=cake;
+	}
+	String cakeName(){
+	return cake.cakeName()+" Chocolate Flavour";
+	}
+	int cakePrice(){
+	return cake.cakePrice()+200;
+	}
+}
+class FlavourMango extends Cake{
+	Cake cake;
+	FlavourMango(Cake cake){
+	this.cake=cake;
+	}
+	String cakeName(){
+	return cake.cakeName()+" Mango Flavour";
+	}
+	int cakePrice(){
+	return cake.cakePrice()+150;
+	}
+}
+class FlavourStrawberry extends Cake{
+	Cake cake;
+	FlavourStrawberry(Cake cake){
+	this.cake=cake;
+	}
+	String cakeName(){
+	return cake.cakeName()+" Strawberry Flavour";
+	}
+	int cakePrice(){
+	return cake.cakePrice()+100;
+	}
+}
+class ShortcakeCafe extends CakeFactory{
+
+	public static void main(String[] args) {
+		System.out.println("-----------Welcome to SHORT-CAKE CAFE-----------");
+		CakeFactory cf=new CakeFactory();
+		Cake c;
+		StringBuilder cake_name= new StringBuilder();
+		Scanner s=new Scanner(System.in);
+		System.out.print("Enter the number of cakes: ");
+		int number_of_cakes=s.nextInt();
+		int price=0;
+		for(int i=0;i<number_of_cakes;i++){
+			System.out.println("Do you want an");
+			System.out.println("1)Eggless cake, or");
+			System.out.println("2)Egg cake");
+			System.out.println("Enter your choice: ");
+			int base_choice=s.nextInt();
+			final String base;
+			if(base_choice==1){
+				base="eggless";
+				c=cf.createCake(base);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+//				cake_name.append(c.cakeName());
+			}
+			else if(base_choice==2){
+				base="";
+				c=cf.createCake(base);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+//				cake_name.append(c.cakeName());
+			}
+			System.out.println("Which flavour of cake would you like to have?");
+			System.out.println("1)Chocolate cake, or");
+			System.out.println("2)Mango cake, or");
+			System.out.println("3)Strawberry cake");
+			int flavour_num=s.nextInt();
+			final String flavour;
+			if(flavour_num==1){
+				flavour="chocolate";
+				c=cf.createCake(flavour);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+//				cake_name.append(c.cakeName());
+			}
+			else if(flavour_num==2){
+				flavour="mango";
+				c=cf.createCake(flavour);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+//				cake_name.append(c.cakeName());
+			}
+			else if(flavour_num==3){
+				flavour="strawberry";
+				c=cf.createCake(flavour);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+//				cake_name.append(c.cakeName());
+			}
+			System.out.println("Which topping would you like to have on your cake?");
+			System.out.println("1)Nuts, or");
+			System.out.println("2)Oreo, or");
+			int topping_num=s.nextInt();
+			final String topping;
+			if(topping_num==1){
+				topping="nuts";
+				c=cf.createCake(topping);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+				cake_name.append(c.cakeName());
+			}
+			else if(topping_num==2){
+				topping="oreo";
+				c=cf.createCake(topping);
+				c.templateMethod(number_of_cakes);
+				price+=c.cakePrice();
+				cake_name.append(c.cakeName());
+			}
+			cake_name.append(" and a ");
+		}
+		System.out.println("Your order details: ");
+		System.out.println("Number of cake(s): "+number_of_cakes);
+		System.out.println("Cake: "+cake_name);
+		System.out.println("Total Amount: Rs "+price);
+		System.out.print("Bon Appétit (:");
+	}
+}
